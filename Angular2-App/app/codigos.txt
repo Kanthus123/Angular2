@@ -1,0 +1,104 @@
+component.ts
+
+import {Component} from '@angular/core';
+
+@Component({
+    selector: 'my-app',
+    templateUrl: 'app/app.component.html',
+    styles: ['.blue-bg{background-color:purple;}']
+})
+export class AppComponent {
+  private currentUser:User = { username: "Kanthus", email: "teste@teste.com"}
+
+//mexendo com email
+      private hideEmail:boolean = false
+
+      private toggle(){
+          this.hideEmail = !this.hideEmail
+
+      }
+
+      private changeMail(newMail:string){
+        this.currentUser.email = newMail
+      }
+// evento baseado no teclar do teclado
+private keyPress(event:KeyboardEvent){
+
+  if(event.keyCode == 13)
+  var inputElement = <HTMLInputElement>event.target
+  this.changeMail(inputElement.value)
+}
+
+// ativar e desativar
+      private disabledInput:boolean = false
+
+      private isDisabled():boolean {
+        return this.disabledInput
+      }
+// mudanca de cor
+      private isBlueBg:boolean = true
+      private bgColor:string = 'red'
+
+//Arei (HAHAHAHHA)
+  private users:Array<User> = [
+        {username:"Paulo", email:"paulo@outlook.com"},
+        {username:"Bruno", email:"bruno@outlook.com"},
+        {username:"Izalena", email:"izalena@outlook.com"},
+        {username:"Mariana", email:"mariana@outlook.com"}
+  ]
+
+}
+
+//struct de interface
+      interface User{
+          username:string,
+          email:string
+  }
+
+component.html
+
+<h1> teste </h1>
+<!--*
+
+*ngIf = "false" "!hideEmail"
+(esconde elemento e do cotigo fonte tambem se for falso),
+
+
+*ngFor="user of users, #i=index"
+
+-->
+<div>
+    <p>Hello, {{currentUser.username}}</p>
+    <p [hidden]='hideEmail'> Seu Email é <em>{{currentUser.email}}</em></p>
+    <button (click)="toggle()">Toggle</button>
+</div>
+
+<div>
+  <input type="text" #a>
+  <p>Value of input is: {{a.value}}</p>
+</div>
+
+<div>
+  <input type="text" #b (keyup)="0">
+  <p>Value of input is: {{b.value}}</p>
+</div>
+
+<div>
+  <p>Trocar email</p>
+  <input type="text" name="email" placeholder="Novo Email" #newMail>
+  <button (click)="changeMail(newMail.value)">Trocar</button>
+</div>
+
+<div>
+  <p>Trocar email 3</p>
+  <input type="text" #newMail3 (keyup.enter)="changeMail(newMail3.value)">
+  <button (click)="changeMail(newMail3.value)">Trocar</button>
+</div>
+
+<br>
+
+<ul>
+    <li *ngFor="#user of users, #i=index">
+      ({{i+1}}) {{user.username}} - <em>{{user.email}}</em>
+    </li>
+</ul>
